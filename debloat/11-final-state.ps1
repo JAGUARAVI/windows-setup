@@ -1,0 +1,76 @@
+$ErrorActionPreference = 'SilentlyContinue'
+$out = 'C:\Users\Public\debloat\final-state.txt'
+$lines = @()
+$lines += "Final state check: $(Get-Date -Format o)"
+$lines += ''
+$os = Get-CimInstance Win32_OperatingSystem
+$cv = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+$lines += '--- OS ---'
+$lines += "Caption: $($os.Caption)"
+$lines += "DisplayVersion: $($cv.DisplayVersion)"
+$lines += "Build: $($cv.CurrentBuild).$($cv.UBR)"
+$lines += "LastBoot: $($os.LastBootUpTime)"
+$lines += ''
+$lines += '--- Disk ---'
+$lines += (Get-Volume -DriveLetter C,D | Select-Object DriveLetter, FileSystemLabel, @{n='SizeGB';e={[math]::Round($_.Size/1GB,1)}}, @{n='FreeGB';e={[math]::Round($_.SizeRemaining/1GB,2)}} | Format-Table -AutoSize | Out-String)
+$lines += '--- Updates ---'
+$lines += (Get-CimInstance Win32_QuickFixEngineering | Where-Object { $_.HotFixID -match 'KB5127648|KB5127690|KB5007651' } | Select-Object HotFixID, Description, InstalledOn | Format-Table -AutoSize | Out-String)
+$lines += "Pending CBS reboot: $(Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending')"
+$lines += "Pending WU reboot: $(Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired')"
+$lines += ''
+$lines += '--- Drivers ---'
+$lines += (Get-CimInstance Win32_VideoController | Select-Object Name, DriverVersion, DriverDate | Format-Table -AutoSize | Out-String)
+$lines += (Get-NetAdapter | Where-Object Status -eq 'Up' | Select-Object Name, InterfaceDescription, DriverVersion, DriverDate | Format-Table -AutoSize | Out-String)
+$lines += (Get-CimInstance Win32_PnPSignedDriver | Where-Object { $_.DeviceName -match 'MediaTek Bluetooth Adapter|AMD DRTM Boot Driver|Silicon Labs CP210x' } | Select-Object DeviceName, DriverVersion, DriverDate | Format-Table -AutoSize | Out-String)
+$lines += ''
+$lines += '--- Services ---'
+$lines += (Get-Service DiagTrack,dmwappushservice,WerSvc,InventorySvc,MapsBroker,RetailDemo,RemoteRegistry,WSAIFabricSvc,vgc,vgk -ErrorAction SilentlyContinue | Select-Object Name, Status, StartType | Format-Table -AutoSize | Out-String)
+$lines += '--- Telemetry tasks still enabled ---'
+$lines += (Get-ScheduledTask | Where-Object {
+    $_.TaskPath -match 'Application Experience|Customer Experience|Feedback|Windows Error Reporting|Disk Diagnostic' -and $_.State -ne 'Disabled'
+} | Select-Object TaskName, TaskPath, State | Format-Table -AutoSize | Out-String)
+$lines += '--- Policies ---'
+$p = [ordered]@{
+    AllowTelemetry                  = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection' -Name AllowTelemetry).AllowTelemetry
+    DisableWindowsConsumerFeatures  = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent' -Name DisableWindowsConsumerFeatures).DisableWindowsConsumerFeatures
+    TurnOffWindowsCopilot           = (Get-ItemProperty 'HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot' -Name TurnOffWindowsCopilot).TurnOffWindowsCopilot
+    DisableAIDataAnalysis           = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' -Name DisableAIDataAnalysis).DisableAIDataAnalysis
+    AllowRecallEnablement           = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' -Name AllowRecallEnablement).AllowRecallEnablement
+    RemoveMicrosoftCopilotApp       = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' -Name RemoveMicrosoftCopilotApp).RemoveMicrosoftCopilotApp
+    DisableClickToDo                = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' -Name DisableClickToDo).DisableClickToDo
+    PaintDisableCocreator           = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Paint' -Name DisableCocreator).DisableCocreator
+    PaintDisableGenerativeFill      = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Paint' -Name DisableGenerativeFill).DisableGenerativeFill
+    PaintDisableImageCreator        = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Paint' -Name DisableImageCreator).DisableImageCreator
+    DisableWebSearch                = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search' -Name DisableWebSearch).DisableWebSearch
+    DisableSearchBoxSuggestions     = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer' -Name DisableSearchBoxSuggestions).DisableSearchBoxSuggestions
+    AllowNewsAndInterests           = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Dsh' -Name AllowNewsAndInterests).AllowNewsAndInterests
+    EdgeSidebar                     = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name HubsSidebarEnabled).HubsSidebarEnabled
+    EdgeCopilotPageContext          = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name CopilotPageContext).CopilotPageContext
+    EdgeMetrics                     = (Get-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name MetricsReportingEnabled).MetricsReportingEnabled
+    StartRecommendations            = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name Start_IrisRecommendations).Start_IrisRecommendations
+    StartTrackProgs                 = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name Start_TrackProgs).Start_TrackProgs
+    StartTrackDocs                  = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name Start_TrackDocs).Start_TrackDocs
+    TaskbarCopilot                  = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name ShowCopilotButton).ShowCopilotButton
+    TaskbarWidgets                  = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name TaskbarDa).TaskbarDa
+    TaskMgrDisabled                 = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System' -Name DisableTaskMgr).DisableTaskMgr
+}
+$p.GetEnumerator() | ForEach-Object { $lines += ("{0}: {1}" -f $_.Key, $_.Value) }
+$lines += ''
+$lines += '--- Removed appx still present ---'
+$removed = @('Microsoft.BingNews','Microsoft.BingWeather','Microsoft.GetHelp','Microsoft.Getstarted','Microsoft.MicrosoftOfficeHub','Microsoft.MicrosoftSolitaireCollection','Microsoft.People','Microsoft.PowerAutomateDesktop','Microsoft.Todos','Microsoft.WindowsFeedbackHub','Microsoft.WindowsMaps','Microsoft.ZuneVideo','Microsoft.OutlookForWindows','Clipchamp.Clipchamp','4DF9E0F8.Netflix','AppleInc.AppleMusicWin','AppleInc.AppleTVWin','Microsoft.Windows.DevHome','MicrosoftCorporationII.QuickAssist','MicrosoftCorporationII.MicrosoftFamily','Microsoft.StartExperiencesApp','Microsoft.WidgetsPlatformRuntime','MicrosoftTeams','Microsoft.Edge.GameAssist')
+$lines += (Get-AppxPackage -AllUsers | Where-Object { $_.Name -in $removed } | Select-Object Name, Version | Format-Table -AutoSize | Out-String)
+$lines += '--- Copilot leftovers ---'
+$lines += (Get-ChildItem 'C:\Program Files (x86)\Microsoft\Copilot' -ErrorAction SilentlyContinue | Select-Object Name | Format-Table -AutoSize | Out-String)
+$lines += ''
+$lines += '--- StartupApproved disabled ---'
+$approved = Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run' -ErrorAction SilentlyContinue
+$approved.PSObject.Properties | Where-Object { $_.Name -notmatch '^PS' -and $_.Value[0] -eq 3 } | ForEach-Object { $lines += "HKCU Run: $($_.Name)" }
+$approvedFolder = Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\StartupFolder' -ErrorAction SilentlyContinue
+$approvedFolder.PSObject.Properties | Where-Object { $_.Name -notmatch '^PS' -and $_.Value[0] -eq 3 } | ForEach-Object { $lines += "StartupFolder: $($_.Name)" }
+$approvedHklm = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run' -ErrorAction SilentlyContinue
+$approvedHklm.PSObject.Properties | Where-Object { $_.Name -notmatch '^PS' -and $_.Value[0] -eq 3 } | ForEach-Object { $lines += "HKLM Run: $($_.Name)" }
+$lines += ''
+$lines += '--- Backup folders ---'
+$lines += (Get-ChildItem 'C:\Users\Public\debloat' -Directory | Select-Object Name, LastWriteTime | Format-Table -AutoSize | Out-String)
+$lines | Set-Content $out -Encoding UTF8
+Get-Content $out

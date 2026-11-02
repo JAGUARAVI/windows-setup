@@ -1,0 +1,87 @@
+.shell powershell
+
+# illogical-impulse / end4 style — Super (Win) is the main modifier
+# Native Windows shortcuts (Win+V, Win+Period, Win+I, Win+L, Win+Tab,
+# Win+Shift+S, Win+N, Win+A, Win+X, Win+G) are intentionally left alone.
+
+# ── apps ─────────────────────────────────────────────────────
+win + return            : wt -d .
+win + t                 : wt -d .
+win + e                 : Start-Process explorer.exe
+win + w                 : Start-Process "C:\Program Files\Zen Browser\zen.exe"
+win + shift + w         : Start-Process "C:\Program Files\Zen Browser\zen.exe"
+win + c                 : Start-Process "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe"
+win + space             : Start-Process "$env:LOCALAPPDATA\FlowLauncher\Flow.Launcher.exe"
+
+# ── window ───────────────────────────────────────────────────
+win + q                 : komorebic close
+win + d                 : komorebic toggle-maximize
+win + shift + d         : komorebic toggle-monocle
+win + f                 : & "$env:USERPROFILE\.config\rice\send-f11.ps1"
+win + alt + space       : komorebic toggle-float
+win + p                 : komorebic toggle-lock
+win + shift + return    : komorebic promote
+win + alt + x           : komorebic flip-layout horizontal
+win + alt + y           : komorebic flip-layout vertical
+
+# ── focus ────────────────────────────────────────────────────
+win + left              : komorebic focus left
+win + right             : komorebic focus right
+win + up                : komorebic focus up
+win + down              : komorebic focus down
+
+# ── move ─────────────────────────────────────────────────────
+win + shift + left      : komorebic move left
+win + shift + right     : komorebic move right
+win + shift + up        : komorebic move up
+win + shift + down      : komorebic move down
+
+# ── workspaces ───────────────────────────────────────────────
+win + 1                 : komorebic focus-workspace 0
+win + 2                 : komorebic focus-workspace 1
+win + 3                 : komorebic focus-workspace 2
+win + 4                 : komorebic focus-workspace 3
+win + 5                 : komorebic focus-workspace 4
+win + 6                 : komorebic focus-workspace 5
+win + 7                 : komorebic focus-workspace 6
+win + 8                 : komorebic focus-workspace 7
+win + 9                 : komorebic focus-workspace 8
+win + 0                 : komorebic focus-workspace 9
+win + alt + 1           : komorebic move-to-workspace 0
+win + alt + 2           : komorebic move-to-workspace 1
+win + alt + 3           : komorebic move-to-workspace 2
+win + alt + 4           : komorebic move-to-workspace 3
+win + alt + 5           : komorebic move-to-workspace 4
+win + alt + 6           : komorebic move-to-workspace 5
+win + alt + 7           : komorebic move-to-workspace 6
+win + alt + 8           : komorebic move-to-workspace 7
+win + alt + 9           : komorebic move-to-workspace 8
+win + alt + 0           : komorebic move-to-workspace 9
+win + ctrl + left       : komorebic cycle-workspace previous
+win + ctrl + right      : komorebic cycle-workspace next
+
+# ── monitors ─────────────────────────────────────────────────
+win + ctrl + alt + left : komorebic cycle-monitor previous
+win + ctrl + alt + right: komorebic cycle-monitor next
+win + ctrl + alt + shift + left  : komorebic cycle-move-to-monitor previous
+win + ctrl + alt + shift + right : komorebic cycle-move-to-monitor next
+
+# ── resize ───────────────────────────────────────────────────
+win + oem_plus          : komorebic resize-axis horizontal increase
+win + oem_minus         : komorebic resize-axis horizontal decrease
+win + shift + oem_plus  : komorebic resize-axis vertical increase
+win + shift + oem_minus : komorebic resize-axis vertical decrease
+
+# ── bar / rice ───────────────────────────────────────────────
+win + j                 : & "C:\Program Files\YASB\yasbc.exe" toggle-bar
+win + oem_2             : komorebic toggle-shortcuts
+win + alt + p           : komorebic toggle-pause
+win + alt + r           : komorebic retile
+win + alt + o           : taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle Hidden
+win + alt + shift + o   : komorebic reload-configuration
+
+# ── media (end4 Super+Shift) ─────────────────────────────────
+win + shift + n         : & "$env:USERPROFILE\.config\rice\send-media.ps1" next
+win + shift + b         : & "$env:USERPROFILE\.config\rice\send-media.ps1" prev
+win + shift + p         : & "$env:USERPROFILE\.config\rice\send-media.ps1" play
+win + shift + m         : & "$env:USERPROFILE\.config\rice\send-media.ps1" mute

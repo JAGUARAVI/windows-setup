@@ -1,0 +1,124 @@
+{
+    "$help": "https://aka.ms/terminal-documentation",
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "actions": [],
+    "copyFormatting": "none",
+    "copyOnSelect": false,
+    "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+    "keybindings": 
+    [
+        {
+            "id": "Terminal.CopyToClipboard",
+            "keys": "ctrl+c"
+        },
+        {
+            "id": "Terminal.PasteFromClipboard",
+            "keys": "ctrl+v"
+        },
+        {
+            "id": "Terminal.DuplicatePaneAuto",
+            "keys": "alt+shift+d"
+        }
+    ],
+    "newTabMenu": 
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
+    "profiles": 
+    {
+        "defaults": 
+        {
+            "antialiasingMode": "grayscale",
+            "colorScheme": "Shibumi",
+            "cursorShape": "bar",
+            "font": 
+            {
+                "face": "JetBrainsMono Nerd Font",
+                "size": 11
+            },
+            "opacity": 78,
+            "padding": "12, 10, 12, 12",
+            "unfocusedAppearance": 
+            {
+                "opacity": 68,
+                "useAcrylic": false
+            },
+            "useAcrylic": false
+        },
+        "list": 
+        [
+            {
+                "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "hidden": false,
+                "name": "Windows PowerShell"
+            },
+            {
+                "commandline": "%SystemRoot%\\System32\\cmd.exe",
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "hidden": false,
+                "name": "Command Prompt"
+            },
+            {
+                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                "hidden": false,
+                "name": "Azure Cloud Shell",
+                "source": "Windows.Terminal.Azure"
+            },
+            {
+                "guid": "{a3a0cd0e-6373-5711-9a40-8c84006d48df}",
+                "hidden": false,
+                "name": "Developer Command Prompt for VS 2019",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{b28f6b96-8464-5802-adf4-70c15306b6c9}",
+                "hidden": false,
+                "name": "Developer PowerShell for VS 2019",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "colorScheme": "Shibumi",
+                "commandline": "powershell.exe -NoExit -Command fastfetch",
+                "guid": "{b1a2c3d4-1111-4a2b-9c3d-000000000001}",
+                "hidden": false,
+                "name": "Shibumi",
+                "startingDirectory": "%USERPROFILE%"
+            }
+        ]
+    },
+    "schemes": 
+    [
+        {
+            "background": "#0B0B0F",
+            "black": "#18181B",
+            "blue": "#4CC2FF",
+            "brightBlack": "#3F3F42",
+            "brightBlue": "#9CC7FF",
+            "brightCyan": "#A6F0E8",
+            "brightGreen": "#B8F0D0",
+            "brightPurple": "#D8B4FE",
+            "brightRed": "#F5A9C8",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#FFE9B0",
+            "cursorColor": "#4CC2FF",
+            "cyan": "#94E2D5",
+            "foreground": "#E5E7EB",
+            "green": "#A6E3A1",
+            "name": "Shibumi",
+            "purple": "#CBA6F7",
+            "red": "#F38BA8",
+            "selectionBackground": "#264F78",
+            "white": "#E5E7EB",
+            "yellow": "#F9E2AF"
+        }
+    ],
+    "showTerminalTitleInTitlebar": false,
+    "snapToGridOnResize": true,
+    "tabWidthMode": "equal",
+    "theme": "dark",
+    "themes": [],
+    "useAcrylicInTabRow": true
+}

@@ -1,0 +1,123 @@
+{
+    "$schema":  "https://raw.githubusercontent.com/LGUG2Z/komorebi/v0.1.41/schema.json",
+    "app_specific_configuration_path":  "$Env:USERPROFILE/applications.json",
+    "window_hiding_behaviour":  "Cloak",
+    "cross_monitor_move_behaviour":  "Swap",
+    "default_workspace_padding":  8,
+    "default_container_padding":  8,
+    "border":  true,
+    "border_width":  1,
+    "border_offset":  0,
+    "border_style":  "Rounded",
+    "border_implementation":  "Windows",
+    "border_colours":  {
+                           "single":  "#C9A7FF",
+                           "stack":  "#FFB3D9",
+                           "monocle":  "#9CC7FF",
+                           "floating":  "#B8F0D0",
+                           "unfocused":  "#3A3152",
+                           "unfocused_locked":  "#4A3F68"
+                       },
+    "transparency":  false,
+    "transparency_alpha":  235,
+    "animation":  {
+                      "enabled":  true,
+                      "duration":  160,
+                      "style":  "EaseOutCubic",
+                      "fps":  60,
+                      "ghost_movement":  true
+                  },
+    "monitors":  [
+                     {
+                         "workspaces":  [
+                                            {
+                                                "name":  "1",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "2",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "3",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "4",
+                                                "layout":  "VerticalStack"
+                                            },
+                                            {
+                                                "name":  "5",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "6",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "7",
+                                                "layout":  "Columns"
+                                            },
+                                            {
+                                                "name":  "8",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "9",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "10",
+                                                "layout":  "BSP"
+                                            }
+                                        ]
+                     },
+                     {
+                         "workspaces":  [
+                                            {
+                                                "name":  "11",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "12",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "13",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "14",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "15",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "16",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "17",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "18",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "19",
+                                                "layout":  "BSP"
+                                            },
+                                            {
+                                                "name":  "20",
+                                                "layout":  "BSP"
+                                            }
+                                        ]
+                     }
+                 ],
+    "ignore_rules":  [],
+    "transparency_ignore_rules":  [],
+    "mouse_follows_focus":  false
+}
